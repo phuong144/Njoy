@@ -6,13 +6,11 @@ import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./redux/actions/authActions";
 import store from "./redux/store";
 import SignIn from './components/SignIn';
-/*
-import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import NavBar from './components/NavBar';
-import ActivityForm from './components/ActivityForm;
+import ActivityForm from './components/ActivityForm';
 import PrivateRoute from "./components/PrivateRoute";
-*/
+// import NavBar from './components/NavBar';
+
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -50,7 +48,15 @@ if (localStorage.jwtToken) {
 
 function App() {
   return (
-    <SignIn />
+    <Router>
+      <div className="App">
+        <Route exact path="/" component={SignIn} />
+        <Route exact path="/register" component={SignUp} />
+        <Switch>
+          <PrivateRoute path="/ActivityForm" component={ActivityForm} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

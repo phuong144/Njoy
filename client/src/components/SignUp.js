@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { registerUser } from "../../actions/authActions";
+import { registerUser } from "../redux/actions/authActions";
 
 function Copyright() {
   return (

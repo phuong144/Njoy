@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/authActions";
 
 function Copyright() {
   return (
@@ -48,11 +52,24 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function SignIn(props) {
+export function SignIn(props) {
   const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [errors, setError] = React.useState({});
 
+  
+  useEffect(() => {
+    // go to home page if authenticated
+    if (props.auth.isAuthenticated) {
+      props.history.push("/ActivityForm");
+    }
+    if (props.errors) {
+      setError(props.errors);
+      // console.log(props.errors);
+    }
+  }, [props]);
+  
   function onSubmit(e) {
     e.preventDefault();
     const userLogin = {
@@ -117,7 +134,7 @@ export default function SignIn(props) {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -130,3 +147,19 @@ export default function SignIn(props) {
     </Container>
   );
 }
+
+SignIn.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(withRouter(SignIn));
