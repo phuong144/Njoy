@@ -18,7 +18,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Njoy
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -46,10 +46,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+
+
+export default function SignIn(props) {
   const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  function onSubmit(e) {
+    e.preventDefault();
+    const userLogin = {
+      email: email,
+      password: password
+    };
+    props.loginUser(userLogin);
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -61,7 +72,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={onSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -96,6 +107,7 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onSumbit
           >
             Sign In
           </Button>
