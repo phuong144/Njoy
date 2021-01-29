@@ -4,6 +4,10 @@ import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/authActions";
 import { Link, withRouter } from "react-router-dom";
 
+/**
+ * 
+ * @param {*} props 
+ */
 export function ActivityForm(props){
 
   function onLogoutClick(e) {
