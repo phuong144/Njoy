@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,15 +9,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link, withRouter} from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { registerUser } from "../../actions/authActions";
+import { registerUser } from "../redux/actions/authActions";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}   
+      {'Copyright © '}
         Njoy{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -67,14 +67,14 @@ export function SignUp(props) {
   }, [props]);
 
   function onSubmit(e) {
-      e.preventDefault();
-      const newUser = {
-        name: name,
-        email: email,
-        password: password,
-        password2: password2
+    e.preventDefault();
+    const newUser = {
+      name: name,
+      email: email,
+      password: password,
+      password2: password2
     };
-    props.registerUser(newUser, props.history); 
+    props.registerUser(newUser, props.history);
   };
 
   return (
