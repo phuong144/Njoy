@@ -11,6 +11,9 @@
 # production
 /build
 
+# cache
+.eslintcache
+
 # misc
 .DS_Store
 .env.local
@@ -21,4 +24,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 .eslintcahe
+=======
+
+.eslintcache
+
+>>>>>>> 3259c21bb8acada6a9a8925e5d9a9017e3356e39
