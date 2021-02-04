@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/authActions";
 import { Link, withRouter } from "react-router-dom";
+import Button from '@material-ui/core/Button';
+import BathtubIcon from '@material-ui/icons/Bathtub';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -48,10 +50,25 @@ export function ActivityForm(props) {
     e.preventDefault();
     props.logoutUser();
   };
-
   const classes = useStyles();
-
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
+  const [errors, setError] = React.useState({});
+
+  // useEffect(() => {
+  //   if (props.auth.isAuthenticated) {
+  //     props.history.push("/ActivityForm");
+  //   }
+  //   if (props.errors) {
+  //     setError(props.errors);
+  //     console.log(props.errors);
+  //   }
+  // }, [props]);
+
+  function onSubmit(e) {
+    e.preventDefault();
+    // props.inputActivity(inputList, props.history);
+    console.log("Wooooo I Submitted: Activity: " + JSON.stringify(inputList));
+  };
 
   // handle input change
   const handleInputChange = (e, index) => {
@@ -113,6 +130,15 @@ export function ActivityForm(props) {
         );
       })}
       <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onSubmit}
+        className={classes.button}
+      >
+        Generate Schedule
+        <BathtubIcon />
+      </Button>
 
       <button
         style={{
@@ -135,6 +161,7 @@ export function ActivityForm(props) {
 
 ActivityForm.propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  // inputActivity: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -146,5 +173,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser }
+  { logoutUser/*, inputActivity*/ }
 )(withRouter(ActivityForm));
