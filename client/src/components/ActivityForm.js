@@ -11,6 +11,16 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
 const useStyles = makeStyles({
   ml10: {
@@ -34,10 +44,11 @@ const useStyles = makeStyles({
     marginTop: '10px'
   },
   root: {
-    '& > *': {
-      margin: 'auto',
-      width: '50ch',
-    }
+    margin: 'auto',
+    width: '55ch',
+  },
+  title: {
+    flexGrow: 1,
   },
 });
 
@@ -53,7 +64,16 @@ export function ActivityForm(props) {
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState({});
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
   //     props.history.push("/ActivityForm");
@@ -92,6 +112,46 @@ export function ActivityForm(props) {
 
   return (
     <div>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            NJoy Activity Form
+          </Typography>
+          <div>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+            </Menu>
+          </div>
+        </Toolbar>
+      </AppBar>
       {inputList.map((x, i) => {
         return (
           <div className={classes.root}>
