@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../redux/actions/authActions";
+import { logoutUser } from "../../redux/actions/authActions";
 import { Link, withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import BathtubIcon from '@material-ui/icons/Bathtub';
@@ -11,16 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 
 const useStyles = makeStyles({
   ml10: {
@@ -64,16 +54,7 @@ export function ActivityForm(props) {
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState({});
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
   //     props.history.push("/ActivityForm");
@@ -112,49 +93,9 @@ export function ActivityForm(props) {
 
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            NJoy Activity Form
-          </Typography>
-          <div>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
-            </Menu>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {inputList.map((x, i) => {
+      {inputList.map((x, i)=> {
         return (
-          <div className={classes.root}>
+          <div key={i} className={classes.root}>
             <Paper elevation={3}>
               <div className={classes.box}>
                 <TextField
@@ -189,7 +130,6 @@ export function ActivityForm(props) {
           </div>
         );
       })}
-      <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
       <Button
         variant="contained"
         color="primary"
@@ -200,21 +140,8 @@ export function ActivityForm(props) {
         <BathtubIcon />
       </Button>
 
-      <button
-        style={{
-          width: "150px",
-          borderRadius: "3px",
-          letterSpacing: "1.5px",
-          marginTop: "1rem",
-          marginLeft: "auto",
-          marginRight: "auto",
-          display: "block"
-        }}
-        onClick={onLogoutClick}
-        className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-      >
-        Logout
-      </button>
+      <hr style={{ marginTop: 20 }}></hr>
+      <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
     </div>
   );
 }
