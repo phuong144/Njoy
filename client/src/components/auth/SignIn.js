@@ -15,7 +15,7 @@ import Container from '@material-ui/core/Container';
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { loginUser } from "../redux/actions/authActions";
+import { loginUser } from "../../redux/actions/authActions";
 
 function Copyright() {
   return (
@@ -62,7 +62,7 @@ export function SignIn(props) {
   useEffect(() => {
     // go to home page if authenticated
     if (props.auth.isAuthenticated) {
-      props.history.push("/ActivityForm");
+      props.history.push("/dashboard");
     }
     if (props.errors) {
       setError(props.errors);
