@@ -53,7 +53,7 @@ export function ActivityForm(props) {
   };
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
-  const [errors, setError] = React.useState({});
+  const [errors, setError] = React.useState({duration:null});
 
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
@@ -74,6 +74,22 @@ export function ActivityForm(props) {
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
+
+    // Only numeric characters
+    if (name === 'duration') {
+      let numericRegex = /^\d+$/;
+      if (!numericRegex.test(value)) {
+        setError({
+          ...errors,
+          duration: true,
+        })
+      } else {
+        setError({
+          ...errors,
+          duration: null,
+        })
+      }
+    }
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
@@ -114,6 +130,8 @@ export function ActivityForm(props) {
                   label="Duration"
                   helperText="in minute"
                   variant="outlined"
+                  error={errors.duration != null}
+                  
                   onChange={e => handleInputChange(e, i)}
                 />
                 <div className={classes.btnbox}>
