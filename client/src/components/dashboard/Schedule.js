@@ -1,6 +1,6 @@
 import react from 'react';
 
-export function Schedule(){
+export default function Schedule(){
   return(
     <p>Schedule</p>
   );
