@@ -52,8 +52,8 @@ export function ActivityForm(props) {
     props.logoutUser();
   };
   const classes = useStyles();
-  const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
-  const [errors, setError] = React.useState({duration:null});
+  const [inputList, setInputList] = React.useState([{ activity0: "", duration0: "" }]);
+  const [errors, setError] = React.useState({ duration0: null });
 
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
@@ -76,7 +76,7 @@ export function ActivityForm(props) {
     const { name, value } = e.target;
 
     // Only numeric characters
-    if (name === 'duration') {
+    if (name.substring(0, 8) === 'duration') {
       let numericRegex = /^\d+$/;
       if (!numericRegex.test(value)) {
         setError({
@@ -103,19 +103,21 @@ export function ActivityForm(props) {
   };
 
   // handle click event of the Add button
-  const handleAddClick = () => {
-    setInputList([...inputList, { activity: "", duration: "" }]);
+  const handleAddClick = (num) => {
+    const activity = "activity" + num;
+    const duration = "duration" + num;
+    setInputList([...inputList, { [activity]: "", [duration]: "" }]);
   };
 
   return (
     <div>
-      {inputList.map((x, i)=> {
+      {inputList.map((x, i) => {
         return (
           <div key={i} className={classes.root}>
             <Paper elevation={3}>
               <div className={classes.box}>
                 <TextField
-                  name="activity"
+                  name={"activity" + i}
                   placeholder="Enter the Activity"
                   value={x.activity}
                   variant="outlined"
@@ -124,14 +126,14 @@ export function ActivityForm(props) {
                 />
                 <TextField
                   className={classes.ml10}
-                  name="duration"
+                  name={"duration" + i}
                   placeholder="Enter the Duration"
                   value={x.duration}
                   label="Duration"
                   helperText="in minute"
                   variant="outlined"
                   error={errors.duration != null}
-                  
+
                   onChange={e => handleInputChange(e, i)}
                 />
                 <div className={classes.btnbox}>
@@ -143,7 +145,7 @@ export function ActivityForm(props) {
             </Paper>
             <div className={classes.add}>
               {inputList.length - 1 === i &&
-                <IconButton onClick={handleAddClick}><AddCircleIcon fontSize="large" /></IconButton>}
+                <IconButton onClick={() => handleAddClick(i + 1)}><AddCircleIcon fontSize="large" /></IconButton>}
             </div>
           </div>
         );
