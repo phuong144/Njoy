@@ -5,12 +5,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./redux/actions/authActions";
 import store from "./redux/store";
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
-import ActivityForm from './components/ActivityForm';
-import PrivateRoute from "./components/PrivateRoute";
-// import NavBar from './components/NavBar';
-
+import SignIn from './components/auth/SignIn';
+import SignUp from './components/auth/SignUp';
+import Dashboard from './components/dashboard/Dashboard';
+import PrivateRoute from "./components/auth/PrivateRoute";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -31,21 +29,6 @@ if (localStorage.jwtToken) {
   }
 }
 
-/*
-  React Router SetUp
-  <Router>
-      <div className="App">
-        <Navbar />
-        <Route exact path="/" component={SignIn} />
-        <Route exact path="/register" component={SignUp} />
-        <Switch>
-          <PrivateRoute path="/ActivityForm" component={ActivityForm} />
-        </Switch>
-      </div>
-    </Router>
-*/
-
-
 function App() {
   return (
     <Router>
@@ -53,7 +36,7 @@ function App() {
         <Route exact path="/" component={SignIn} />
         <Route exact path="/register" component={SignUp} />
         <Switch>
-          <PrivateRoute path="/ActivityForm" component={ActivityForm} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
         </Switch>
       </div>
     </Router>
