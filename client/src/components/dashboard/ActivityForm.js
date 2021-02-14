@@ -52,8 +52,8 @@ export function ActivityForm(props) {
     props.logoutUser();
   };
   const classes = useStyles();
-  const [inputList, setInputList] = React.useState([{ activity0: "", duration0: "" }]);
-  const [errors, setError] = React.useState({ duration0: null });
+  const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
+  const [errors, setError] = React.useState([{ error: null }]);
 
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
@@ -74,25 +74,22 @@ export function ActivityForm(props) {
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
-
+    const errorlist = [...errors];
     // Only numeric characters
     if (name.substring(0, 8) === 'duration') {
       let numericRegex = /^\d+$/;
       if (!numericRegex.test(value)) {
-        setError({
-          ...errors,
-          duration: true,
-        })
+        const error = 'error';
+        errorlist[index][error] = true;
       } else {
-        setError({
-          ...errors,
-          duration: null,
-        })
+        const error = 'error';
+        errorlist[index][error] = null;
       }
     }
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
+    setError(errorlist)
   };
 
   // handle click event of the Remove button
@@ -100,24 +97,30 @@ export function ActivityForm(props) {
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
+    const error = [...errors];
+    error.splice(index, 1);
+    setError(error);
   };
 
   // handle click event of the Add button
   const handleAddClick = (num) => {
-    const activity = "activity" + num;
-    const duration = "duration" + num;
+    const activity = "activity";
+    const duration = "duration";
+    const error = "error";
     setInputList([...inputList, { [activity]: "", [duration]: "" }]);
+    setError([...errors, { [error]: null }]);
   };
 
   return (
     <div>
       {inputList.map((x, i) => {
+        const error = "error";
         return (
           <div key={i} className={classes.root}>
             <Paper elevation={3}>
               <div className={classes.box}>
                 <TextField
-                  name={"activity" + i}
+                  name={"activity"}
                   placeholder="Enter the Activity"
                   value={x.activity}
                   variant="outlined"
@@ -126,13 +129,13 @@ export function ActivityForm(props) {
                 />
                 <TextField
                   className={classes.ml10}
-                  name={"duration" + i}
+                  name={"duration"}
                   placeholder="Enter the Duration"
                   value={x.duration}
                   label="Duration"
                   helperText="in minute"
                   variant="outlined"
-                  error={errors.duration != null}
+                  error={errors[i][error] != null}
 
                   onChange={e => handleInputChange(e, i)}
                 />
@@ -162,6 +165,7 @@ export function ActivityForm(props) {
 
       <hr style={{ marginTop: 20 }}></hr>
       <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
+      <div style={{ marginTop: 20 }}>{JSON.stringify(errors)}</div>
     </div>
   );
 }
