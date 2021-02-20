@@ -6,6 +6,13 @@ require('dotenv').config();
 // const User = require("../../models/User");
 const Schedule = require("../../models/Activity");
 
+/**
+ * 
+ * @param {*} schedule list of objects [{activity:'', duration:''}]
+ */
+function calculateSchedule(schedule) {
+  
+}
 
 router.post("/generate", (req, res) => {
   // req.body.id = users id
@@ -16,6 +23,8 @@ router.post("/generate", (req, res) => {
     if (schedule) {
       // if schedule found, add onto existing activites and schedule
       schedule.activities = activities;
+
+      // set schedule.schedule to calculated available schedule
       schedule.schedule = activities;
       schedule
         .save()
