@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
+import { generateSchedule } from "../../redux/actions/scheduleActions";
 
 const useStyles = makeStyles({
   ml10: {
@@ -54,6 +55,7 @@ export function ActivityForm(props) {
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState([{ error: null }]);
+  const [schedule, setSchedule] = React.useState([{ activity: "", duration: "" }]);
 
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
@@ -65,10 +67,24 @@ export function ActivityForm(props) {
   //   }
   // }, [props]);
 
+  useEffect(() => {
+    if (props.schedule.schedule != null) {
+      setSchedule(props.schedule.schedule);
+      console.log(schedule);
+    } else {
+      console.log("No schedule");
+    }
+  }, [props])
+
   function onSubmit(e) {
     e.preventDefault();
     // props.inputActivity(inputList, props.history);
-    console.log("Wooooo I Submitted: Activity: " + JSON.stringify(inputList));
+    const dataObject = {
+      id: props.auth.user.id,
+      activities: inputList,
+    }
+    props.generateSchedule(dataObject);
+    // console.log("Wooooo I Submitted: Activity: " + JSON.stringify(inputList));
   };
 
   // handle input change
@@ -165,6 +181,7 @@ export function ActivityForm(props) {
 
       <hr style={{ marginTop: 20 }}></hr>
       <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
+      <div style={{ marginTop: 20 }}>{JSON.stringify(schedule)}</div>
       <div style={{ marginTop: 20 }}>{JSON.stringify(errors)}</div>
     </div>
   );
@@ -172,6 +189,7 @@ export function ActivityForm(props) {
 
 ActivityForm.propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  generateSchedule: PropTypes.func.isRequired,
   // inputActivity: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -179,10 +197,11 @@ ActivityForm.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  schedule: state.schedule,
 });
 
 export default connect(
   mapStateToProps,
-  { logoutUser/*, inputActivity*/ }
+  { logoutUser, generateSchedule }
 )(withRouter(ActivityForm));

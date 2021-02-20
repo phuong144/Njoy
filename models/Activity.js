@@ -5,21 +5,24 @@ const ActivitySchema = new Schema({
   activity: {
     type: String,
   },
-  time: {
+  duration: {
     type: String
   },
 });
 
 const ScheduleSchema = new Schema({
-  uid: {
-    type: ObjectId,
-    required: true,
-  },
   activities: [ActivitySchema],
+  /*
   schedule: [{
     activity: String,
     time: String,
   }],
+  */
+  schedule: [ActivitySchema],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
 });
 
 module.exports = Schedule = mongoose.model("Schedule", ScheduleSchema);
