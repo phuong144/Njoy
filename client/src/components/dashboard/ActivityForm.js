@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../redux/actions/authActions";
 import { Link, withRouter } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import BathtubIcon from '@material-ui/icons/Bathtub';
@@ -49,14 +48,9 @@ const useStyles = makeStyles({
  * @param {*} props 
  */
 export function ActivityForm(props) {
-  function onLogoutClick(e) {
-    e.preventDefault();
-    props.logoutUser();
-  };
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState([{ error: null }]);
-  // const [schedule, setSchedule] = React.useState([{ activity: "", duration: "" }]);
   const [schedule, setSchedule] = React.useState(null);
 
   // useEffect(() => {
@@ -69,6 +63,7 @@ export function ActivityForm(props) {
   //   }
   // }, [props]);
 
+  // Acts as componentDidMount, executes on component mount to get any existing schedule
   useEffect(() => {
     if (schedule == null) {
       const uid = props.auth.user.id;
@@ -76,22 +71,22 @@ export function ActivityForm(props) {
     }
   })
 
+  // Executes when props changes E.g. schedule is generated
   useEffect(() => {
     setSchedule(props.schedule.schedule);
   }, [props])
 
+  // Creates dataObject to send to action for generating a schedule
   function onSubmit(e) {
     e.preventDefault();
-    // props.inputActivity(inputList, props.history);
     const dataObject = {
       id: props.auth.user.id,
       activities: inputList,
     }
     props.generateSchedule(dataObject);
-    // console.log("Wooooo I Submitted: Activity: " + JSON.stringify(inputList));
   };
 
-  // handle input change
+  // Validate and parse input to save to inputList
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const errorlist = [...errors];
@@ -112,7 +107,7 @@ export function ActivityForm(props) {
     setError(errorlist)
   };
 
-  // handle click event of the Remove button
+  // Handle click event for removing a pair of text inputs
   const handleRemoveClick = index => {
     const list = [...inputList];
     list.splice(index, 1);
@@ -122,7 +117,7 @@ export function ActivityForm(props) {
     setError(error);
   };
 
-  // handle click event of the Add button
+  // Handle click event for adding a pair of text inputs
   const handleAddClick = (num) => {
     const activity = "activity";
     const duration = "duration";
@@ -191,23 +186,28 @@ export function ActivityForm(props) {
   );
 }
 
+// generateSchedule is an action needed to generate a schedule
+// getSchedule is an action needed to retrieve any existing schedule
+// auth is an object in the redux store that stores user authentication info
+// schedule is an object in the redux store that stores the schedule data
+// errors is an object in the redux store that stores errors
 ActivityForm.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
   generateSchedule: PropTypes.func.isRequired,
   getSchedule: PropTypes.func.isRequired,
-  // inputActivity: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   schedule: PropTypes.object.isRequired,
 };
 
+// Maps redux store state to props
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
   schedule: state.schedule,
 });
 
+// Connects required actions and props to this component
 export default connect(
   mapStateToProps,
-  { logoutUser, generateSchedule, getSchedule }
+  { generateSchedule, getSchedule }
 )(withRouter(ActivityForm));
