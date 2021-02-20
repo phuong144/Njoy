@@ -43,4 +43,16 @@ router.post("/generate", (req, res) => {
   })
 });
 
+router.get('/getSchedule', (req, res) => {
+  const uid = req.query.uid;
+  Schedule.findOne({ user: uid }).then(schedule => {
+    if (schedule) {
+      // if schedule found, return schedule
+      res.status(200).json(schedule.schedule);
+    } else {
+      res.status(404).json("No schedule");
+    }
+  })
+})
+
 module.exports = router;

@@ -12,6 +12,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import { generateSchedule } from "../../redux/actions/scheduleActions";
+import { getSchedule } from "../../redux/actions/scheduleActions";
 
 const useStyles = makeStyles({
   ml10: {
@@ -55,7 +56,8 @@ export function ActivityForm(props) {
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState([{ error: null }]);
-  const [schedule, setSchedule] = React.useState([{ activity: "", duration: "" }]);
+  // const [schedule, setSchedule] = React.useState([{ activity: "", duration: "" }]);
+  const [schedule, setSchedule] = React.useState(null);
 
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
@@ -68,12 +70,14 @@ export function ActivityForm(props) {
   // }, [props]);
 
   useEffect(() => {
-    if (props.schedule.schedule != null) {
-      setSchedule(props.schedule.schedule);
-      console.log(schedule);
-    } else {
-      console.log("No schedule");
+    if (schedule == null) {
+      const uid = props.auth.user.id;
+      props.getSchedule(uid);
     }
+  })
+
+  useEffect(() => {
+    setSchedule(props.schedule.schedule);
   }, [props])
 
   function onSubmit(e) {
@@ -190,6 +194,7 @@ export function ActivityForm(props) {
 ActivityForm.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   generateSchedule: PropTypes.func.isRequired,
+  getSchedule: PropTypes.func.isRequired,
   // inputActivity: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -203,5 +208,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, generateSchedule }
+  { logoutUser, generateSchedule, getSchedule }
 )(withRouter(ActivityForm));

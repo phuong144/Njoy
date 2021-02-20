@@ -26,6 +26,33 @@ export const generateSchedule = dataObject => dispatch => {
     );
 };
 
+// Generate Schedule action handler
+export const getSchedule = uid => dispatch => {
+  axios
+    .get("http://localhost:5000/api/schedule/getSchedule", {
+      params: {
+        uid: uid
+      }
+    })
+    .then(res => {
+      if (res.status == '404') {
+        console.log("No schedule");
+        dispatch(setSchedule([]));
+      } else {
+        const schedule = res.data;
+        console.log(schedule);
+        dispatch(setSchedule(schedule));
+      }
+     
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Set schedule
 export const setSchedule = schedule => {
     return {
