@@ -22,6 +22,7 @@ connection.once('open', () => {
 })
 
 const users = require("./routes/api/User");
+const schedule = require('./routes/api/Schedule');
 // Middleware
 
 // Passport middleware
@@ -31,6 +32,7 @@ require("./config/passport")(passport);
 
 // Routes
 app.use("/api/users", users);
+app.use("/api/schedule", schedule);
 
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
