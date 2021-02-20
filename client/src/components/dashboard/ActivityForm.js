@@ -197,7 +197,8 @@ ActivityForm.propTypes = {
   getSchedule: PropTypes.func.isRequired,
   // inputActivity: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  schedule: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
