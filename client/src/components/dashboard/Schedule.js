@@ -13,14 +13,18 @@ import {
 
 const testing = [{ startDate: 'T09:45', endDate: 'T11:00', title: 'Yoga' },
 { startDate: 'T12:00', endDate: 'T13:30', title: 'Running' }];
-const currentDate = '2018-11-01';
+const today = new Date();
+const day = (today.getDate() < 10) ? "0" + (today.getDate()) : today.getDate();
+const month = (today.getMonth() < 10) ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
+const year = today.getFullYear();
+const currentDate = year + '-' + month + '-' + day;
 const schedulerData = [];
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
-  if (testing != null)
-    testing.forEach(function (item, index) {
+  if (schedule != null)
+    schedule.forEach(function (item, index) {
       schedulerData[index] = {
         startDate: '',
         endDate: '',
