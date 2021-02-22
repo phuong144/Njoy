@@ -10,11 +10,12 @@ import {
   DayView,
   Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
+
+const testing = [{ startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', activity: 'Yoga' },
+{ startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', activity: 'Running' }];
 const currentDate = '2018-11-01';
-const schedulerData = [
-  { startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', title: 'Meeting' },
-  { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' },
-];
+const schedulerData = [];
+
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
@@ -30,6 +31,18 @@ export function Schedule(props) {
   // Executes when props changes E.g. schedule is generated
   useEffect(() => {
     setSchedule(props.schedule.schedule);
+
+    testing.forEach(function (item, index) {
+      schedulerData[index] = {
+        startDate: '',
+        endDate: '',
+        title: ''
+      }
+      schedulerData[index]["startDate"] = item["startDate"];
+      schedulerData[index]["endDate"] = item["endDate"];
+      schedulerData[index]["title"] = item["activity"];
+    });
+    console.log(schedulerData);
   }, [props])
 
   return (
@@ -37,18 +50,20 @@ export function Schedule(props) {
       <Paper>
         <Scheduler
           data={schedulerData}
+          {...console.log(schedulerData)}
         >
           <ViewState
             currentDate={currentDate}
           />
           <DayView
             startDayHour={9}
-            endDayHour={14}
+            endDayHour={20}
           />
           <Appointments />
         </Scheduler>
       </Paper>
-      <div style={{ marginTop: 20 }}>{JSON.stringify(schedule)}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(schedule) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(schedulerData) : "Null"}</div>
     </div>
   )
 }
