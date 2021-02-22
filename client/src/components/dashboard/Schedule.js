@@ -11,15 +11,25 @@ import {
   Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-const testing = [{ startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', activity: 'Yoga' },
-{ startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', activity: 'Running' }];
+const testing = [{ startDate: 'T09:45', endDate: 'T11:00', title: 'Yoga' },
+{ startDate: 'T12:00', endDate: 'T13:30', title: 'Running' }];
 const currentDate = '2018-11-01';
 const schedulerData = [];
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
-
+  if (testing != null)
+    testing.forEach(function (item, index) {
+      schedulerData[index] = {
+        startDate: '',
+        endDate: '',
+        title: ''
+      }
+      schedulerData[index]["startDate"] = currentDate + item["startDate"];
+      schedulerData[index]["endDate"] = currentDate + item["endDate"];
+      schedulerData[index]["title"] = item["title"];
+    });
   // Acts as componentDidMount, executes on component mount to get any existing schedule
   useEffect(() => {
     if (schedule == null) {
@@ -31,18 +41,6 @@ export function Schedule(props) {
   // Executes when props changes E.g. schedule is generated
   useEffect(() => {
     setSchedule(props.schedule.schedule);
-
-    testing.forEach(function (item, index) {
-      schedulerData[index] = {
-        startDate: '',
-        endDate: '',
-        title: ''
-      }
-      schedulerData[index]["startDate"] = item["startDate"];
-      schedulerData[index]["endDate"] = item["endDate"];
-      schedulerData[index]["title"] = item["activity"];
-    });
-    console.log(schedulerData);
   }, [props])
 
   return (
@@ -50,7 +48,6 @@ export function Schedule(props) {
       <Paper>
         <Scheduler
           data={schedulerData}
-          {...console.log(schedulerData)}
         >
           <ViewState
             currentDate={currentDate}
