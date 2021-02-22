@@ -3,8 +3,19 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { getSchedule } from "../../redux/actions/scheduleActions";
-
-export function Schedule(props){
+import Paper from '@material-ui/core/Paper';
+import { ViewState } from '@devexpress/dx-react-scheduler';
+import {
+  Scheduler,
+  DayView,
+  Appointments,
+} from '@devexpress/dx-react-scheduler-material-ui';
+const currentDate = '2018-11-01';
+const schedulerData = [
+  { startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', title: 'Meeting' },
+  { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' },
+];
+export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
 
@@ -21,9 +32,22 @@ export function Schedule(props){
     setSchedule(props.schedule.schedule);
   }, [props])
 
-  return(
+  return (
     <div>
-      <p>Schedule Data</p>
+      <Paper>
+        <Scheduler
+          data={schedulerData}
+        >
+          <ViewState
+            currentDate={currentDate}
+          />
+          <DayView
+            startDayHour={9}
+            endDayHour={14}
+          />
+          <Appointments />
+        </Scheduler>
+      </Paper>
       <div style={{ marginTop: 20 }}>{JSON.stringify(schedule)}</div>
     </div>
   )
