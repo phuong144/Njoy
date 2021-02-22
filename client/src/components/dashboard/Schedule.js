@@ -32,7 +32,7 @@ export function Schedule(props) {
       }
       schedulerData[index]["startDate"] = currentDate + item["startDate"];
       schedulerData[index]["endDate"] = currentDate + item["endDate"];
-      schedulerData[index]["title"] = item["title"];
+      schedulerData[index]["title"] = item["activity"];
     });
   // Acts as componentDidMount, executes on component mount to get any existing schedule
   useEffect(() => {
