@@ -11,30 +11,19 @@ import {
   Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-//get todays date
-const today = new Date();
-const day = (today.getDate() < 10) ? "0" + (today.getDate()) : today.getDate();
-const month = (today.getMonth() < 10) ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
-const year = today.getFullYear();
-const currentDate = year + '-' + month + '-' + day;
-const schedulerData = [];
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
-  //grab schedule global state and add activity to scheduler
-  if (schedule != null)
-    schedule.forEach(function (item, index) {
-      schedulerData[index] = {
-        startDate: '',
-        endDate: '',
-        title: ''
-      }
-      const startEndDate = item["duration"].split('-');
-      schedulerData[index]["startDate"] = currentDate + startEndDate[0];
-      schedulerData[index]["endDate"] = currentDate + startEndDate[1];
-      schedulerData[index]["title"] = item["activity"];
-    });
+  const [displaySchedule, setDisplay] = React.useState([]);
+
+  //get todays date
+  const today = new Date();
+  const day = (today.getDate() < 10) ? "0" + (today.getDate()) : today.getDate();
+  const month = (today.getMonth() < 10) ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
+  const year = today.getFullYear();
+  const currentDate = year + '-' + month + '-' + day;
+
   // Acts as componentDidMount, executes on component mount to get any existing schedule
   useEffect(() => {
     if (schedule == null) {
@@ -46,26 +35,42 @@ export function Schedule(props) {
   // Executes when props changes E.g. schedule is generated
   useEffect(() => {
     setSchedule(props.schedule.schedule);
+    if (schedule != null) {
+      
+      const schedulerData = [];
+      schedule.forEach(function (item, index) {
+        schedulerData[index] = {
+          startDate: '',
+          endDate: '',
+          title: ''
+        };
+        const startEndDate = item["duration"].split('-');
+        schedulerData[index]["startDate"] = currentDate + startEndDate[0];
+        schedulerData[index]["endDate"] = currentDate + startEndDate[1];
+        schedulerData[index]["title"] = item["activity"];
+      })
+      setDisplay(schedulerData);
+    }
   }, [props])
 
   return (
     <div>
       <Paper>
         <Scheduler
-          data={schedulerData}
+          data={displaySchedule}
         >
           <ViewState
             currentDate={currentDate}
           />
           <DayView
-            startDayHour={9}
-            endDayHour={20}
+            startDayHour={8}
+            endDayHour={24}
           />
           <Appointments />
         </Scheduler>
       </Paper>
       <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(schedule) : "Null"}</div>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(schedulerData) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(displaySchedule) : "Null"}</div>
     </div>
   )
 }
