@@ -3,10 +3,26 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { getSchedule } from "../../redux/actions/scheduleActions";
+import Paper from '@material-ui/core/Paper';
+import { ViewState } from '@devexpress/dx-react-scheduler';
+import {
+  Scheduler,
+  DayView,
+  Appointments,
+} from '@devexpress/dx-react-scheduler-material-ui';
 
-export function Schedule(props){
+
+export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
+  const [displaySchedule, setDisplay] = React.useState([]);
+
+  //get todays date
+  const today = new Date();
+  const day = (today.getDate() < 10) ? "0" + (today.getDate()) : today.getDate();
+  const month = (today.getMonth() < 10) ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
+  const year = today.getFullYear();
+  const currentDate = year + '-' + month + '-' + day;
 
   // Acts as componentDidMount, executes on component mount to get any existing schedule
   useEffect(() => {
@@ -19,12 +35,42 @@ export function Schedule(props){
   // Executes when props changes E.g. schedule is generated
   useEffect(() => {
     setSchedule(props.schedule.schedule);
+    if (schedule != null) {
+      
+      const schedulerData = [];
+      schedule.forEach(function (item, index) {
+        schedulerData[index] = {
+          startDate: '',
+          endDate: '',
+          title: ''
+        };
+        const startEndDate = item["duration"].split('-');
+        schedulerData[index]["startDate"] = currentDate + startEndDate[0];
+        schedulerData[index]["endDate"] = currentDate + startEndDate[1];
+        schedulerData[index]["title"] = item["activity"];
+      })
+      setDisplay(schedulerData);
+    }
   }, [props])
 
-  return(
+  return (
     <div>
-      <p>Schedule Data</p>
-      <div style={{ marginTop: 20 }}>{JSON.stringify(schedule)}</div>
+      <Paper>
+        <Scheduler
+          data={displaySchedule}
+        >
+          <ViewState
+            currentDate={currentDate}
+          />
+          <DayView
+            startDayHour={8}
+            endDayHour={24}
+          />
+          <Appointments />
+        </Scheduler>
+      </Paper>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(schedule) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(displaySchedule) : "Null"}</div>
     </div>
   )
 }
