@@ -41,6 +41,11 @@ const useStyles = makeStyles({
   title: {
     flexGrow: 1,
   },
+  link: {
+    margin: '15px',
+    color: 'white',
+    textDecoration: 'none !important',
+  }
 });
 
 export function Appbar (props){
@@ -63,9 +68,10 @@ export function Appbar (props){
   return(
     <AppBar position="static">
       <Toolbar>
-        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton>
+        <div>
+          <Link className={classes.link} to="/dashboard/activityform">Generate Schedule</Link>
+          <Link className={classes.link} to="/dashboard/schedule">View Schedule</Link>
+        </div>
         <Typography variant="h6" className={classes.title}>
           NJoy Activity Form
         </Typography>
