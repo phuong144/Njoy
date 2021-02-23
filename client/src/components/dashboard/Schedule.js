@@ -11,8 +11,7 @@ import {
   Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-const testing = [{ startDate: 'T09:45', endDate: 'T11:00', title: 'Yoga' },
-{ startDate: 'T12:00', endDate: 'T13:30', title: 'Running' }];
+//get todays date
 const today = new Date();
 const day = (today.getDate() < 10) ? "0" + (today.getDate()) : today.getDate();
 const month = (today.getMonth() < 10) ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
@@ -23,6 +22,7 @@ const schedulerData = [];
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
+  //grab schedule global state and add activity to scheduler
   if (schedule != null)
     schedule.forEach(function (item, index) {
       schedulerData[index] = {
@@ -30,8 +30,9 @@ export function Schedule(props) {
         endDate: '',
         title: ''
       }
-      schedulerData[index]["startDate"] = currentDate + item["startDate"];
-      schedulerData[index]["endDate"] = currentDate + item["endDate"];
+      const startEndDate = item["duration"].split('-');
+      schedulerData[index]["startDate"] = currentDate + startEndDate[0];
+      schedulerData[index]["endDate"] = currentDate + startEndDate[1];
       schedulerData[index]["title"] = item["activity"];
     });
   // Acts as componentDidMount, executes on component mount to get any existing schedule
