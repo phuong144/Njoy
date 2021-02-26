@@ -39,9 +39,10 @@ export const getSchedule = uid => dispatch => {
         console.log("No schedule");
         dispatch(setSchedule([]));
       } else {
-        const schedule = res.data;
-        console.log(schedule);
-        dispatch(setSchedule(schedule));
+        const data = res.data;
+        
+        console.log(data);
+        dispatch(setSchedule(data));
       }
      
     })

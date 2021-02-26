@@ -192,7 +192,7 @@ router.post("/generate", (req, res) => {
       schedule.schedule = calculateSchedule(activities);
       schedule
         .save()
-        .then(updatedSched => res.json(updatedSched.schedule))
+        .then(updatedSched => res.json(updatedSched))
         .catch(err => {
           console.log(err);
           res.status(500).json("Error updating schedule");
@@ -207,7 +207,7 @@ router.post("/generate", (req, res) => {
       });
       newSchedule
         .save()
-        .then(schedule => res.json(schedule.schedule))
+        .then(schedule => res.json(schedule))
         .catch(err => {
           console.log(err);
           res.status(500).json("Error saving schedule");
@@ -221,7 +221,7 @@ router.get('/getSchedule', (req, res) => {
   Schedule.findOne({ user: uid }).then(schedule => {
     if (schedule) {
       // if schedule found, return schedule
-      res.status(200).json(schedule.schedule);
+      res.status(200).json(schedule);
     } else {
       res.status(404).json("No schedule");
     }

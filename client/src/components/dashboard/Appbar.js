@@ -69,8 +69,8 @@ export function Appbar (props){
     <AppBar position="static">
       <Toolbar>
         <div>
-          <Link className={classes.link} to="/dashboard/activityform">Generate Schedule</Link>
           <Link className={classes.link} to="/dashboard/schedule">View Schedule</Link>
+          <Link className={classes.link} to="/dashboard/activityform">Generate Schedule</Link>
         </div>
         <Typography variant="h6" className={classes.title}>
           NJoy Activity Form
@@ -100,8 +100,6 @@ export function Appbar (props){
             open={open}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
             <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
           </Menu>
         </div>
