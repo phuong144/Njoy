@@ -12,6 +12,7 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 
+
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setSchedule] = React.useState(null);
@@ -34,27 +35,31 @@ export function Schedule(props) {
 
   // Executes when props changes E.g. schedule is generated
   useEffect(() => {
+    // console.log(props.schedule);
+    const scheduleProps = props.schedule.schedule;
+    const schedulerData = [];
+    scheduleProps.forEach(function (item, index) {
+      schedulerData[index] = {
+        startDate: '',
+        endDate: '',
+        title: ''
+      };
+      const startEndDate = item["duration"].split('-');
+      schedulerData[index]["startDate"] = currentDate + startEndDate[0];
+      schedulerData[index]["endDate"] = currentDate + startEndDate[1];
+      schedulerData[index]["title"] = item["activity"];
+    })
     setSchedule(props.schedule.schedule);
-    if (schedule != null) {
+    setDisplay(schedulerData);
       
-      const schedulerData = [];
-      schedule.forEach(function (item, index) {
-        schedulerData[index] = {
-          startDate: '',
-          endDate: '',
-          title: ''
-        };
-        const startEndDate = item["duration"].split('-');
-        schedulerData[index]["startDate"] = currentDate + startEndDate[0];
-        schedulerData[index]["endDate"] = currentDate + startEndDate[1];
-        schedulerData[index]["title"] = item["activity"];
-      })
-      setDisplay(schedulerData);
-    }
   }, [props])
 
   return (
     <div>
+      <Link to={{
+        pathname: '/dashboard/activityform',
+        state: { addMore: true }
+      }}> Add More </Link>
       <Paper>
         <Scheduler
           data={displaySchedule}
@@ -69,8 +74,8 @@ export function Schedule(props) {
           <Appointments />
         </Scheduler>
       </Paper>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(schedule) : "Null"}</div>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? JSON.stringify(displaySchedule) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule: '+ JSON.stringify(schedule) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule data formatted to display: '+ JSON.stringify(displaySchedule) : "Null"}</div>
     </div>
   )
 }

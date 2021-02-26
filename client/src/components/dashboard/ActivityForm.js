@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useLocation } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import Paper from '@material-ui/core/Paper';
@@ -51,7 +51,6 @@ export function ActivityForm(props) {
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState([{ error: null }]);
-  const [schedule, setSchedule] = React.useState(null);
 
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
@@ -63,18 +62,30 @@ export function ActivityForm(props) {
   //   }
   // }, [props]);
 
-  // Acts as componentDidMount, executes on component mount to get any existing schedule
-  useEffect(() => {
-    if (schedule == null) {
-      const uid = props.auth.user.id;
-      props.getSchedule(uid);
-    }
-  })
+  const location = useLocation();
 
+  useEffect(() => {
+    if (location.state != null && location.state.addMore) {
+      const activities = props.schedule.activities;
+      activities.map((object, index) => {
+        delete object._id;
+      })
+      const errorObj = { 'error': null }
+      const errorList = [];
+      for (let i=0; i<activities.length ; i++) {
+        errorList.push(errorObj);
+      }
+      setError(errorList);
+      setInputList(activities);
+    }
+  }, [location]);
+
+  /*
   // Executes when props changes E.g. schedule is generated
   useEffect(() => {
-    setSchedule(props.schedule.schedule);
+    
   }, [props])
+  */
 
   // Creates dataObject to send to action for generating a schedule
   function onSubmit(e) {
@@ -84,6 +95,7 @@ export function ActivityForm(props) {
       activities: inputList,
     }
     props.generateSchedule(dataObject);
+    props.history.push("/dashboard/schedule");
   };
 
   // Validate and parse input to save to inputList
@@ -180,7 +192,6 @@ export function ActivityForm(props) {
 
       <hr style={{ marginTop: 20 }}></hr>
       <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
-      <div style={{ marginTop: 20 }}>{JSON.stringify(schedule)}</div>
       <div style={{ marginTop: 20 }}>{JSON.stringify(errors)}</div>
     </div>
   );
@@ -197,6 +208,7 @@ ActivityForm.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   schedule: PropTypes.object.isRequired,
+  addMore: PropTypes.bool
 };
 
 // Maps redux store state to props
