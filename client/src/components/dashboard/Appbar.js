@@ -12,6 +12,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { makeStyles } from '@material-ui/core/styles';
+import logo from './njoylogo2.png';
+import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles({
   ml10: {
@@ -39,13 +41,21 @@ const useStyles = makeStyles({
     width: '55ch',
   },
   title: {
-    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   link: {
     margin: '15px',
-    color: 'white',
+    color: '#3bb446',
+    fontSize: '20px',
+    fontFamily: 'Open Sans',
+    fontWeight: 'bold',
     textDecoration: 'none !important',
-  }
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export function Appbar (props){
@@ -66,22 +76,22 @@ export function Appbar (props){
     setAnchorEl(null);
   };
   return(
-    <AppBar position="static">
+    <AppBar position="static" style={{ background: '#c9f8f5' }} elevation={1}>
+      <Container className={classes.container}>
+        <img src={logo} alt="Logo" className={classes.title} width="118.75px" height="62.5px"/>
+      </Container>
       <Toolbar>
         <div>
           <Link className={classes.link} to="/dashboard/schedule">View Schedule</Link>
           <Link className={classes.link} to="/dashboard/activityform">Generate Schedule</Link>
         </div>
-        <Typography variant="h6" className={classes.title}>
-          NJoy Activity Form
-        </Typography>
         <div>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenu}
-            color="inherit"
+            className={classes.link}
           >
             <AccountCircle />
           </IconButton>
