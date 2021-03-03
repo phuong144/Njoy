@@ -90,6 +90,26 @@ function formatDate(date, duration) {
 }
 
 /**
+ * 
+ * @param {*} date String start date from drag and drop
+ * @param {*} date2 String end date from drag and drop
+ * @return {string} String format to save
+ */
+function convertToHHMM(date, date2) {
+  let startDate = new Date(date);
+  let endDate = new Date(date2);
+  const hour = formatTime(startDate.getHours());
+  const minutes = formatTime(startDate.getMinutes());
+  const hour2 = formatTime(endDate.getHours());
+  const min2 = formatTime(endDate.getMinutes());
+  let startDateString = String('T'+hour+':'+minutes);
+  let endDateString = String('T'+hour2+':'+min2);
+  const finalFormat = startDateString+'-'+endDateString;
+  console.log(finalFormat);
+  return finalFormat;
+}
+
+/**
  * Determines if duration fits within an interval
  * @param {string} startTime hh:mm
  * @param {string} endTime hh:mm
@@ -177,6 +197,35 @@ function calculateSchedule(schedule) {
  return finalSchedule;
 
 }
+
+router.post("/setSchedule", (req, res) => {
+  // req.body.id = users id
+  // req.body.changedActivity = {'activity' : {'startDate':'', 'endDate':'', 'title':''}}
+  console.log("in set schedule");
+  const uid = req.body.id;
+  const activity = req.body.changedActivity;
+  Schedule.findOne({ user: uid }).then(schedule => {
+    if (schedule) {
+      // set schedule.schedule to calculated available schedule
+      // schedule.schedule = calculateSchedule(activities);
+      for (let i=0; i<schedule.schedule.length; i++) {
+        if (schedule.schedule[i]['activity'] == activity['activity']['title']) {
+          schedule.schedule[i]['duration'] = convertToHHMM(activity['activity']['startDate'], activity['activity']['endDate']);
+          break;
+        }
+      }
+      schedule
+        .save()
+        .then(updatedSched => res.json(updatedSched))
+        .catch(err => {
+          console.log(err);
+          res.status(500).json("Error updating schedule");
+        });
+    } else {
+      res.status(500).json("No schedule to set new activity");
+    }
+  })
+});
 
 router.post("/generate", (req, res) => {
   // req.body.id = users id

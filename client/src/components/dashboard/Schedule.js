@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { getSchedule } from "../../redux/actions/scheduleActions";
+import { getSchedule, setSchedule } from "../../redux/actions/scheduleActions";
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
 import {
@@ -12,10 +12,9 @@ import {
   DragDropProvider,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
-  const [schedule, setSchedule] = React.useState(null);
+  const [schedule, setServerSchedule] = React.useState(null);
   const [displaySchedule, setDisplay] = React.useState([]);
 
   //get todays date
@@ -50,7 +49,7 @@ export function Schedule(props) {
       schedulerData[index]["endDate"] = currentDate + startEndDate[1];
       schedulerData[index]["title"] = item["activity"];
     })
-    setSchedule(props.schedule.schedule);
+    setServerSchedule(props.schedule.schedule);
     setDisplay(schedulerData);
 
   }, [props])
@@ -61,10 +60,57 @@ export function Schedule(props) {
 
     if (changed) {
       // changed = {id : {endDate:'', startDate:''}}
+      console.log(changed);
+      const dataObj = {
+        id: props.auth.user.id,
+      };
+      const changedActivity = {};
+      for (let i=0; i<displaySchedule.length; i++) {
+        if (changed[i]) {
+          const activityName = displaySchedule[i]['title'];
+          const endDate = changed[i]['endDate'];
+          const startDate = changed[i]['startDate'];
+          changedActivity['activity'] = {
+            'startDate': startDate,
+            'endDate': endDate,
+            'title': activityName
+          }
+          dataObj['changedActivity'] = changedActivity;
+          console.log(dataObj);
+          break;
+        }
+      }
+      /*
+      displaySchedule.map(activity => {
+        if (changed[activity.id]) {
+          const activityName = displaySchedule[activity.id]['title'];
+          const endDate = changed[appointment.id]['endDate'];
+          const startDate = changed[appointment.id]['startDate'];
+          changedActivity['activity'] = {
+            'startDate': startDate,
+            'endDate': endDate,
+            'title': activityName
+          }
+          dataObj['changedActivity'] = changedActivity;
+          break;
+        }
+      })
+      */
+      /* dataObj = {
+        'id': '',
+        'changedActivity': {
+          'activityName' : {
+            'startDate': '',
+            'endDate': ''
+          }
+        }
+      */
+     props.setSchedule(dataObj);
+    }
+      /*
       setDisplay(displaySchedule.map(appointment => (
         changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
-      )));
-    }
+      )));*/
   }, [setDisplay, displaySchedule]);
 
   return (
@@ -104,6 +150,7 @@ export function Schedule(props) {
 // errors is an object in the redux store that stores errors
 Schedule.propTypes = {
   getSchedule: PropTypes.func.isRequired,
+  setSchedule: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   schedule: PropTypes.object.isRequired,
@@ -119,5 +166,5 @@ const mapStateToProps = state => ({
 // Connects required actions and props to this component
 export default connect(
   mapStateToProps,
-  { getSchedule }
+  { getSchedule, setSchedule }
 )(withRouter(Schedule));
