@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { getSchedule } from "../../redux/actions/scheduleActions";
 import Paper from '@material-ui/core/Paper';
-import { ViewState } from '@devexpress/dx-react-scheduler';
+import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   DayView,
   Appointments,
+  DragDropProvider,
 } from '@devexpress/dx-react-scheduler-material-ui';
-
 
 
 export function Schedule(props) {
@@ -42,7 +42,8 @@ export function Schedule(props) {
       schedulerData[index] = {
         startDate: '',
         endDate: '',
-        title: ''
+        title: '',
+        id: index,
       };
       const startEndDate = item["duration"].split('-');
       schedulerData[index]["startDate"] = currentDate + startEndDate[0];
@@ -51,11 +52,23 @@ export function Schedule(props) {
     })
     setSchedule(props.schedule.schedule);
     setDisplay(schedulerData);
-      
+
   }, [props])
 
+  const onCommitChanges = React.useCallback(({ added, changed, deleted}) => {
+    // Parse for changed data;
+    // Send parsed data to 
+
+    if (changed) {
+      // changed = {id : {endDate:'', startDate:''}}
+      setDisplay(displaySchedule.map(appointment => (
+        changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
+      )));
+    }
+  }, [setDisplay, displaySchedule]);
+
   return (
-    <div>
+    <React.Fragment>
       <Link to={{
         pathname: '/dashboard/activityform',
         state: { addMore: true }
@@ -67,16 +80,21 @@ export function Schedule(props) {
           <ViewState
             currentDate={currentDate}
           />
+          <EditingState
+            onCommitChanges={onCommitChanges}
+          />
+          <IntegratedEditing />
           <DayView
             startDayHour={8}
             endDayHour={24}
           />
           <Appointments />
+          <DragDropProvider />
         </Scheduler>
       </Paper>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule: '+ JSON.stringify(schedule) : "Null"}</div>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule data formatted to display: '+ JSON.stringify(displaySchedule) : "Null"}</div>
-    </div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule: ' + JSON.stringify(schedule) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule data formatted to display: ' + JSON.stringify(displaySchedule) : "Null"}</div>
+    </React.Fragment>
   )
 }
 
