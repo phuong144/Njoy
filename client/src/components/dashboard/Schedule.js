@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { getSchedule } from "../../redux/actions/scheduleActions";
 import Paper from '@material-ui/core/Paper';
-import { ViewState } from '@devexpress/dx-react-scheduler';
+import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   DayView,
   Appointments,
+  DragDropProvider,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 
@@ -24,7 +25,6 @@ export function Schedule(props) {
   const month = (today.getMonth() < 10) ? "0" + (today.getMonth() + 1) : today.getMonth() + 1;
   const year = today.getFullYear();
   const currentDate = year + '-' + month + '-' + day;
-
   // Acts as componentDidMount, executes on component mount to get any existing schedule
   useEffect(() => {
     if (schedule == null) {
@@ -51,8 +51,28 @@ export function Schedule(props) {
     })
     setSchedule(props.schedule.schedule);
     setDisplay(schedulerData);
-      
+
   }, [props])
+
+  const allowDrag = () => true;
+  const allowResize = () => true;
+  function commitChanges({ added, changed, deleted }) {
+    setDisplay((displaySchedule) => {
+      let { schedulerData } = displaySchedule;
+      if (added) {
+        const startingAddedId = displaySchedule.length > 0 ? displaySchedule[displaySchedule.length - 1].id + 1 : 0;
+        schedulerData = [...displaySchedule, { id: startingAddedId, ...added }];
+      }
+      if (changed) {
+        schedulerData = displaySchedule.map(appointment => (
+          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
+      }
+      if (deleted !== undefined) {
+        schedulerData = displaySchedule.filter(appointment => appointment.id !== deleted);
+      }
+      return { schedulerData };
+    });
+  }
 
   return (
     <div>
@@ -67,15 +87,22 @@ export function Schedule(props) {
           <ViewState
             currentDate={currentDate}
           />
+          <EditingState
+            onCommitChanges={commitChanges}
+          />
           <DayView
             startDayHour={8}
             endDayHour={24}
           />
           <Appointments />
+          <DragDropProvider
+            allowDrag={allowDrag}
+            allowResize={allowResize}
+          />
         </Scheduler>
       </Paper>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule: '+ JSON.stringify(schedule) : "Null"}</div>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule data formatted to display: '+ JSON.stringify(displaySchedule) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule: ' + JSON.stringify(schedule) : "Null"}</div>
+      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule data formatted to display: ' + JSON.stringify(displaySchedule) : "Null"}</div>
     </div>
   )
 }
