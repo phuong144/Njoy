@@ -201,14 +201,13 @@ function calculateSchedule(schedule) {
 router.post("/setSchedule", (req, res) => {
   // req.body.id = users id
   // req.body.changedActivity = {'activity' : {'startDate':'', 'endDate':'', 'title':''}}
-  console.log("in set schedule");
   const uid = req.body.id;
   const activity = req.body.changedActivity;
   Schedule.findOne({ user: uid }).then(schedule => {
     if (schedule) {
-      // set schedule.schedule to calculated available schedule
-      // schedule.schedule = calculateSchedule(activities);
+      // Loop through schedule and find activity to update
       for (let i=0; i<schedule.schedule.length; i++) {
+        // if activity name in db == activity name sent in req
         if (schedule.schedule[i]['activity'] == activity['activity']['title']) {
           schedule.schedule[i]['duration'] = convertToHHMM(activity['activity']['startDate'], activity['activity']['endDate']);
           break;

@@ -57,7 +57,6 @@ export function Schedule(props) {
   const onCommitChanges = React.useCallback(({ added, changed, deleted}) => {
     // Parse for changed data;
     // Send parsed data to 
-
     if (changed) {
       // changed = {id : {endDate:'', startDate:''}}
       console.log(changed);
@@ -80,37 +79,8 @@ export function Schedule(props) {
           break;
         }
       }
-      /*
-      displaySchedule.map(activity => {
-        if (changed[activity.id]) {
-          const activityName = displaySchedule[activity.id]['title'];
-          const endDate = changed[appointment.id]['endDate'];
-          const startDate = changed[appointment.id]['startDate'];
-          changedActivity['activity'] = {
-            'startDate': startDate,
-            'endDate': endDate,
-            'title': activityName
-          }
-          dataObj['changedActivity'] = changedActivity;
-          break;
-        }
-      })
-      */
-      /* dataObj = {
-        'id': '',
-        'changedActivity': {
-          'activityName' : {
-            'startDate': '',
-            'endDate': ''
-          }
-        }
-      */
      props.setSchedule(dataObj);
     }
-      /*
-      setDisplay(displaySchedule.map(appointment => (
-        changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
-      )));*/
   }, [setDisplay, displaySchedule]);
 
   return (
