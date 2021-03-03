@@ -12,6 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import { generateSchedule } from "../../redux/actions/scheduleActions";
 import { getSchedule } from "../../redux/actions/scheduleActions";
+import Container from '@material-ui/core/Container';
+
 
 const useStyles = makeStyles({
   ml10: {
@@ -20,6 +22,8 @@ const useStyles = makeStyles({
   },
   mr10: {
     marginRight: '10px',
+    marginTop: '25px',
+    color: '#ffa500',
   },
   box: {
     marginBottom: '10px',
@@ -41,6 +45,20 @@ const useStyles = makeStyles({
   title: {
     flexGrow: 1,
   },
+  button: {
+    color: '#3bb446',
+    fontSize: '15px',
+    fontFamily: 'Open Sans',
+    fontWeight: 'bold',
+    textDecoration: 'none !important',
+  },
+  addbutton: {
+    color: '#ffa500',
+  },
+  text: {
+    width:'100%',
+    height:'100px',
+  }
 });
 
 /**
@@ -144,14 +162,15 @@ export function ActivityForm(props) {
         const error = "error";
         return (
           <div key={i} className={classes.root}>
-            <Paper elevation={3}>
-              <div className={classes.box}>
+            <Paper elevation={3} className={classes.text}>
+              <Container className={classes.box}>
                 <TextField
                   name={"activity"}
                   placeholder="Enter the Activity"
                   value={x.activity}
                   variant="outlined"
                   label="Activity"
+                  style={{ marginTop: '20px' }}
                   onChange={e => handleInputChange(e, i)}
                 />
                 <TextField
@@ -162,6 +181,7 @@ export function ActivityForm(props) {
                   label="Duration"
                   helperText="in minute"
                   variant="outlined"
+                  style={{ marginTop: '20px' }}
                   error={errors[i][error] != null}
 
                   onChange={e => handleInputChange(e, i)}
@@ -171,18 +191,20 @@ export function ActivityForm(props) {
                     className={classes.mr10}
                     onClick={() => handleRemoveClick(i)}><DeleteIcon /></IconButton>}
                 </div>
-              </div>
+              </Container>
             </Paper>
             <div className={classes.add}>
               {inputList.length - 1 === i &&
-                <IconButton onClick={() => handleAddClick(i + 1)}><AddCircleIcon fontSize="large" /></IconButton>}
+                <IconButton className={classes.addbutton} onClick={() => handleAddClick(i + 1)}>
+                  <AddCircleIcon fontSize="large" />
+                </IconButton>}
             </div>
           </div>
         );
       })}
       <Button
         variant="contained"
-        color="primary"
+        style={{ background: '#c9f8f5' }}
         onClick={onSubmit}
         className={classes.button}
       >
