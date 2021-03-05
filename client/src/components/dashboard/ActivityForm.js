@@ -56,8 +56,8 @@ const useStyles = makeStyles({
     color: '#ffa500',
   },
   text: {
-    width:'100%',
-    height:'100px',
+    marginBottom: '10px',
+    marginTop: '10px',
   }
 });
 
@@ -163,7 +163,7 @@ export function ActivityForm(props) {
         return (
           <div key={i} className={classes.root}>
             <Paper elevation={3} className={classes.text}>
-              <Container className={classes.box}>
+              
                 <TextField
                   name={"activity"}
                   placeholder="Enter the Activity"
@@ -191,7 +191,7 @@ export function ActivityForm(props) {
                     className={classes.mr10}
                     onClick={() => handleRemoveClick(i)}><DeleteIcon /></IconButton>}
                 </div>
-              </Container>
+              
             </Paper>
             <div className={classes.add}>
               {inputList.length - 1 === i &&
