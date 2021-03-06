@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { getSchedule, setSchedule } from "../../redux/actions/scheduleActions";
+import { getSchedule, setSchedule, resetSchedule } from "../../redux/actions/scheduleActions";
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
 import {
@@ -83,12 +83,21 @@ export function Schedule(props) {
     }
   }, [setDisplay, displaySchedule]);
 
+  function handleResetSchedule() {
+    const uid = props.auth.user.id;
+    const dataObj = {
+      uid: uid
+    }
+    props.resetSchedule(dataObj);
+  }
+
   return (
     <React.Fragment>
       <Link to={{
         pathname: '/dashboard/activityform',
         state: { addMore: true }
       }}> Add More </Link>
+      <button onClick={handleResetSchedule}>Reset Schedule</button>
       <Paper>
         <Scheduler
           data={displaySchedule}
@@ -119,6 +128,7 @@ export function Schedule(props) {
 // schedule is an object in the redux store that stores the schedule data
 // errors is an object in the redux store that stores errors
 Schedule.propTypes = {
+  resetSchedule: PropTypes.func.isRequired,
   getSchedule: PropTypes.func.isRequired,
   setSchedule: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
@@ -136,5 +146,5 @@ const mapStateToProps = state => ({
 // Connects required actions and props to this component
 export default connect(
   mapStateToProps,
-  { getSchedule, setSchedule }
+  { getSchedule, setSchedule, resetSchedule }
 )(withRouter(Schedule));
