@@ -11,6 +11,7 @@ import {
   Appointments,
   DragDropProvider,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import Button from '@material-ui/core/Button';
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
@@ -85,10 +86,20 @@ export function Schedule(props) {
 
   return (
     <React.Fragment>
-      <Link to={{
-        pathname: '/dashboard/activityform',
-        state: { addMore: true }
-      }}> Add More </Link>
+      <Button variant="contained"
+        style={{ background: '#c9f8f5',
+        marginBottom: '10px',
+        marginTop: '10px'}}>
+        <Link to={{
+          pathname: '/dashboard/activityform',
+          state: { addMore: true }
+        }}
+        style={{ color: '#3bb446',
+                 fontSize: '15px',
+                 fontFamily: 'Arial',
+                 fontWeight: 'bold',
+        }}> Add More </Link>
+      </Button>
       <Paper>
         <Scheduler
           data={displaySchedule}
