@@ -59,8 +59,8 @@ export function Schedule(props) {
         id: index,
       };
       const startEndDate = item["duration"].split('-');
-      schedulerData[index]["startDate"] = currentDate + startEndDate[0];
-      schedulerData[index]["endDate"] = currentDate + startEndDate[1];
+      schedulerData[index]["startDate"] = startEndDate[0];
+      schedulerData[index]["endDate"] = startEndDate[1];
       schedulerData[index]["title"] = item["activity"];
     })
     setServerSchedule(props.schedule.schedule);
