@@ -96,6 +96,8 @@ function formatDate(date, duration) {
  * @return {string} String format to save
  */
 function convertToHHMM(date, date2) {
+  console.log(date);
+  console.log(date2);
   let startDate = new Date(date);
   let endDate = new Date(date2);
   console.log("startDate in HHMM: "+startDate);
