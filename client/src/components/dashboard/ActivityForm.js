@@ -69,6 +69,7 @@ export function ActivityForm(props) {
   const classes = useStyles();
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState([{ error: null }]);
+  const [disabled, setDisable] = React.useState(false);
 
   // useEffect(() => {
   //   if (props.auth.isAuthenticated) {
@@ -84,18 +85,16 @@ export function ActivityForm(props) {
 
   useEffect(() => {
     if (location.state != null && location.state.addMore) {
-      const errorObj = { 'error': null }
-      const errorList = [];
       const activities = props.schedule.activities;
       activities.map((object, index) => {
         delete object._id;
       })
-      for (let i=0; i<activities.length ; i++) {
-        errorList.push(errorObj);
+      let initErrorList = [];
+      for (let i=0; i<activities.length; i++) {
+        initErrorList.push({ 'error': null });
       }
-      
       setInputList(activities);
-      setError(errorList);
+      setError(initErrorList);
     }
   }, [location]);
 
@@ -126,20 +125,37 @@ export function ActivityForm(props) {
       let numericRegex = /^\d+$/;
       if (!numericRegex.test(value)) {
         const error = 'error';
-        console.log(errorlist);
         errorlist[index][error] = true;
-        console.log(index);
-        console.log(errorlist);
+        // setDisable(true);
       } else {
         const error = 'error';
         errorlist[index][error] = null;
       }
     }
+    checkErrors(errorlist);
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
     setError(errorlist)
+    checkErrors(errorlist);
   };
+
+  function checkErrors(errorlist) {
+    let check = false;
+    for(let i=0; i<errorlist.length; i++) {
+      if (errorlist[i]['error'] == true) {
+        check = true;
+        break;
+      }
+    }
+    if (!check) {
+      setDisable(false);
+      console.log("no errors");
+    } else {
+      setDisable(true);
+    }
+  }
+  
 
   // Handle click event for removing a pair of text inputs
   const handleRemoveClick = index => {
@@ -149,6 +165,7 @@ export function ActivityForm(props) {
     const error = [...errors];
     error.splice(index, 1);
     setError(error);
+    checkErrors(error);
   };
 
   // Handle click event for adding a pair of text inputs
@@ -158,6 +175,7 @@ export function ActivityForm(props) {
     const error = "error";
     setInputList([...inputList, { [activity]: "", [duration]: "" }]);
     setError([...errors, { [error]: null }]);
+    checkErrors(errors);
   };
 
   return (
@@ -176,6 +194,7 @@ export function ActivityForm(props) {
                   label="Activity"
                   style={{ marginTop: '20px' }}
                   onChange={e => handleInputChange(e, i)}
+                  onEnded={checkErrors}
                 />
                 <TextField
                   className={classes.ml10}
@@ -187,8 +206,8 @@ export function ActivityForm(props) {
                   variant="outlined"
                   style={{ marginTop: '20px' }}
                   error={errors[i][error] != null}
-
                   onChange={e => handleInputChange(e, i)}
+                  onEnded={checkErrors}
                 />
                 <div className={classes.btnbox}>
                   {inputList.length !== 1 && <IconButton
@@ -211,14 +230,13 @@ export function ActivityForm(props) {
         style={{ background: '#c9f8f5' }}
         onClick={onSubmit}
         className={classes.button}
+        disabled={disabled}
       >
         Generate Schedule
         <BathtubIcon />
       </Button>
 
       <hr style={{ marginTop: 20 }}></hr>
-      <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
-      <div style={{ marginTop: 20 }}>{JSON.stringify(errors)}</div>
     </div>
   );
 }
