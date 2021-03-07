@@ -125,7 +125,8 @@ export function Schedule(props) {
       <Button variant="contained"
         style={{ background: '#c9f8f5',
                  marginBottom: '10px',
-                 marginTop: '10px'}}
+                 marginTop: '10px',
+                 marginLeft: '10px'}}
         className={classes.button}
         onClick={handleResetSchedule}>Reset Schedule</Button>
       <Paper>
