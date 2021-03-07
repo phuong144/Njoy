@@ -34,7 +34,6 @@ export function Schedule(props) {
 
   // Executes when props changes E.g. schedule is generated
   useEffect(() => {
-    // console.log(props.schedule);
     const scheduleProps = props.schedule.schedule;
     const schedulerData = [];
     scheduleProps.forEach(function (item, index) {
@@ -59,7 +58,6 @@ export function Schedule(props) {
     // Send parsed data to 
     if (changed) {
       // changed = {id : {endDate:'', startDate:''}}
-      console.log(changed);
       const dataObj = {
         id: props.auth.user.id,
       };
@@ -75,7 +73,6 @@ export function Schedule(props) {
             'title': activityName
           }
           dataObj['changedActivity'] = changedActivity;
-          console.log(dataObj);
           break;
         }
       }
@@ -117,8 +114,6 @@ export function Schedule(props) {
           <DragDropProvider />
         </Scheduler>
       </Paper>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule: ' + JSON.stringify(schedule) : "Null"}</div>
-      <div style={{ marginTop: 20 }}>{(schedule != null) ? 'Schedule data formatted to display: ' + JSON.stringify(displaySchedule) : "Null"}</div>
     </React.Fragment>
   )
 }
