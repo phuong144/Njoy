@@ -247,10 +247,10 @@ router.post("/generate", (req, res) => {
         });
     } else {
       // calculation of available schedule before saving
-
+      const scheduleCalc = calculateSchedule(activities);
       const newSchedule = new Schedule({
         activities: activities,
-        schedule: activities,
+        schedule: scheduleCalc,
         user: uid,
       });
       newSchedule
@@ -272,6 +272,49 @@ router.get('/getSchedule', (req, res) => {
       res.status(200).json(schedule);
     } else {
       res.status(404).json("No schedule");
+    }
+  })
+})
+
+router.post('/resetSchedule', (req, res) => {
+  const uid = req.body.uid;
+  Schedule.findOne({ user: uid }).then(schedule => {
+    if (schedule) {
+      // Init to empty
+      const emptyActivity = {
+        "activity": '',
+        "duration": '',
+      }
+      // need to push empty activity to init activity form
+      schedule.activities = [];
+      schedule.activities.push(emptyActivity);
+      schedule.schedule = [];
+      schedule
+        .save()
+        .then(updatedSched => res.json(updatedSched))
+        .catch(err => {
+          console.log(err);
+          res.status(500).json("Error updating schedule");
+        });
+    } else {
+      const emptyActivity = {
+        "activity": '',
+        "duration": '',
+      }
+      const activityList = [];
+      activityList.push(emptyActivity);
+      const newSchedule = new Schedule({
+        activities: activityList,
+        schedule: [],
+        user: uid,
+      });
+      newSchedule
+        .save()
+        .then(schedule => res.json(schedule))
+        .catch(err => {
+          console.log(err);
+          res.status(500).json("Error saving schedule");
+        });
     }
   })
 })

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { getSchedule, setSchedule } from "../../redux/actions/scheduleActions";
+import { getSchedule, setSchedule, resetSchedule } from "../../redux/actions/scheduleActions";
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
 import {
@@ -12,11 +12,25 @@ import {
   DragDropProvider,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+
+const useStyles = makeStyles({
+  button: {
+    color: '#ffa500',
+    fontSize: '15px',
+    fontFamily: 'Arial',
+    fontWeight: 'bold',
+    textDecoration: 'none !important',
+  },
+});
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setServerSchedule] = React.useState(null);
   const [displaySchedule, setDisplay] = React.useState([]);
+  const classes = useStyles();
 
   //get todays date
   const today = new Date();
@@ -84,6 +98,14 @@ export function Schedule(props) {
     }
   }, [setDisplay, displaySchedule]);
 
+  function handleResetSchedule() {
+    const uid = props.auth.user.id;
+    const dataObj = {
+      uid: uid
+    }
+    props.resetSchedule(dataObj);
+  }
+
   return (
     <React.Fragment>
       <Button variant="contained"
@@ -100,6 +122,12 @@ export function Schedule(props) {
                  fontWeight: 'bold',
         }}> Add More </Link>
       </Button>
+      <Button variant="contained"
+        style={{ background: '#c9f8f5',
+                 marginBottom: '10px',
+                 marginTop: '10px'}}
+        className={classes.button}
+        onClick={handleResetSchedule}>Reset Schedule</Button>
       <Paper>
         <Scheduler
           data={displaySchedule}
@@ -130,6 +158,7 @@ export function Schedule(props) {
 // schedule is an object in the redux store that stores the schedule data
 // errors is an object in the redux store that stores errors
 Schedule.propTypes = {
+  resetSchedule: PropTypes.func.isRequired,
   getSchedule: PropTypes.func.isRequired,
   setSchedule: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
@@ -147,5 +176,5 @@ const mapStateToProps = state => ({
 // Connects required actions and props to this component
 export default connect(
   mapStateToProps,
-  { getSchedule, setSchedule }
+  { getSchedule, setSchedule, resetSchedule }
 )(withRouter(Schedule));

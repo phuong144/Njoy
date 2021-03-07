@@ -80,17 +80,18 @@ export function ActivityForm(props) {
 
   useEffect(() => {
     if (location.state != null && location.state.addMore) {
+      const errorObj = { 'error': null }
+      const errorList = [];
       const activities = props.schedule.activities;
       activities.map((object, index) => {
         delete object._id;
       })
-      const errorObj = { 'error': null }
-      const errorList = [];
       for (let i=0; i<activities.length ; i++) {
         errorList.push(errorObj);
       }
-      setError(errorList);
+      
       setInputList(activities);
+      setError(errorList);
     }
   }, [location]);
 
@@ -121,7 +122,10 @@ export function ActivityForm(props) {
       let numericRegex = /^\d+$/;
       if (!numericRegex.test(value)) {
         const error = 'error';
+        console.log(errorlist);
         errorlist[index][error] = true;
+        console.log(index);
+        console.log(errorlist);
       } else {
         const error = 'error';
         errorlist[index][error] = null;
