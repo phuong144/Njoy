@@ -7,7 +7,7 @@ import {
 // Generate Schedule action handler
 export const generateSchedule = dataObject => dispatch => {
   axios
-    .post("http://localhost:5000/api/schedule/generate", dataObject)
+    .post("/api/schedule/generate", dataObject)
     .then(res => {
       // Data object sent in from the api, as a list of objects
       // [{ activity: "", duration: "" }]
@@ -29,7 +29,7 @@ export const generateSchedule = dataObject => dispatch => {
 // Reset schedule to empty
 export const resetSchedule = dataObj => dispatch => {
   axios
-    .post("http://localhost:5000/api/schedule/resetSchedule", dataObj)
+    .post("/api/schedule/resetSchedule", dataObj)
     .then(res => {
       // schedule is a list of objects
       const schedule = res.data;
@@ -48,7 +48,7 @@ export const resetSchedule = dataObj => dispatch => {
 // Update schedule with changed activity time from DragNDrop
 export const setSchedule = dataObject => dispatch => {
   axios
-    .post("http://localhost:5000/api/schedule/setSchedule", dataObject)
+    .post("/api/schedule/setSchedule", dataObject)
     .then(res => {
       // schedule is a list of objects
       const schedule = res.data;
@@ -67,7 +67,7 @@ export const setSchedule = dataObject => dispatch => {
 // Generate Schedule action handler
 export const getSchedule = uid => dispatch => {
   axios
-    .get("http://localhost:5000/api/schedule/getSchedule", {
+    .get("/api/schedule/getSchedule", {
       params: {
         uid: uid
       }
