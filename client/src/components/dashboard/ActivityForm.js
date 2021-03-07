@@ -25,10 +25,6 @@ const useStyles = makeStyles({
     marginTop: '25px',
     color: '#ffa500',
   },
-  box: {
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
   btnbox: {
     marginLeft: '10px',
     width: '50px',
@@ -48,7 +44,7 @@ const useStyles = makeStyles({
   button: {
     color: '#3bb446',
     fontSize: '15px',
-    fontFamily: 'Open Sans',
+    fontFamily: 'Arial',
     fontWeight: 'bold',
     textDecoration: 'none !important',
   },
@@ -56,8 +52,8 @@ const useStyles = makeStyles({
     color: '#ffa500',
   },
   text: {
-    width:'100%',
-    height:'100px',
+    marginBottom: '10px',
+    marginTop: '10px',
   }
 });
 
@@ -185,7 +181,6 @@ export function ActivityForm(props) {
         return (
           <div key={i} className={classes.root}>
             <Paper elevation={3} className={classes.text}>
-              <Container className={classes.box}>
                 <TextField
                   name={"activity"}
                   placeholder="Enter the Activity"
@@ -214,7 +209,6 @@ export function ActivityForm(props) {
                     className={classes.mr10}
                     onClick={() => handleRemoveClick(i)}><DeleteIcon /></IconButton>}
                 </div>
-              </Container>
             </Paper>
             <div className={classes.add}>
               {inputList.length - 1 === i &&

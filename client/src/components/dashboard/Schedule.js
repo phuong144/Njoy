@@ -11,11 +11,26 @@ import {
   Appointments,
   DragDropProvider,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+
+const useStyles = makeStyles({
+  button: {
+    color: '#ffa500',
+    fontSize: '15px',
+    fontFamily: 'Arial',
+    fontWeight: 'bold',
+    textDecoration: 'none !important',
+  },
+});
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setServerSchedule] = React.useState(null);
   const [displaySchedule, setDisplay] = React.useState([]);
+  const classes = useStyles();
 
   //get todays date
   const today = new Date();
@@ -90,11 +105,27 @@ export function Schedule(props) {
 
   return (
     <React.Fragment>
-      <Link to={{
-        pathname: '/dashboard/activityform',
-        state: { addMore: true }
-      }}> Add More </Link>
-      <button onClick={handleResetSchedule}>Reset Schedule</button>
+      <Button variant="contained"
+        style={{ background: '#c9f8f5',
+        marginBottom: '10px',
+        marginTop: '10px'}}>
+        <Link to={{
+          pathname: '/dashboard/activityform',
+          state: { addMore: true }
+        }}
+        style={{ color: '#3bb446',
+                 fontSize: '15px',
+                 fontFamily: 'Arial',
+                 fontWeight: 'bold',
+        }}> Add More </Link>
+      </Button>
+      <Button variant="contained"
+        style={{ background: '#c9f8f5',
+                 marginBottom: '10px',
+                 marginTop: '10px',
+                 marginLeft: '10px'}}
+        className={classes.button}
+        onClick={handleResetSchedule}>Reset Schedule</Button>
       <Paper>
         <Scheduler
           data={displaySchedule}

@@ -11,11 +11,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import logo from './njoylogo2.png';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   ml10: {
     marginLeft: '10px',
     width: '15ch',
@@ -45,23 +47,28 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   link: {
-    margin: '15px',
     color: '#3bb446',
-    fontSize: '20px',
-    fontFamily: 'Open Sans',
+    fontSize: '16px',
+    fontFamily: 'Arial',
     fontWeight: 'bold',
     textDecoration: 'none !important',
   },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  info: {
+    textAlign: 'right',
   },
-});
+  leftToolbar: {
+    textAlign: 'left',
+  },
+}));
 
 export function Appbar (props){
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const classes = useStyles();
+  const theme = useTheme();
+
+  const view = (useMediaQuery(theme.breakpoints.down('sm'))) ? "View" : "View Schedule";
+  const generate = (useMediaQuery(theme.breakpoints.down('sm'))) ? "Generate" : "Generate Schedule";
   
   function onLogoutClick(e) {
     e.preventDefault();
@@ -77,15 +84,17 @@ export function Appbar (props){
   };
   return(
     <AppBar position="static" style={{ background: '#c9f8f5' }} elevation={1}>
-      <Container className={classes.container}>
-        <img src={logo} alt="Logo" className={classes.title} width="118.75px" height="62.5px"/>
-      </Container>
       <Toolbar>
-        <div>
-          <Link className={classes.link} to="/dashboard/schedule">View Schedule</Link>
-          <Link className={classes.link} to="/dashboard/activityform">Generate Schedule</Link>
-        </div>
-        <div>
+        <Grid item xs = {2} className={classes.leftToolbar}>
+          <Link className={classes.link} to="/dashboard/schedule">{view}</Link>
+        </Grid>
+        <Grid item xs = {3} className={classes.leftToolbar}>
+          <Link className={classes.link} to="/dashboard/activityform">{generate}</Link>
+        </Grid>
+        <Grid item xs = {6}>
+          <img src={logo} alt="Logo" className={classes.title} width="118.75px" height="62.5px"/>
+        </Grid>
+        <Grid item xs = {5} className={classes.info}>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -93,7 +102,7 @@ export function Appbar (props){
             onClick={handleMenu}
             className={classes.link}
           >
-            <AccountCircle />
+            <AccountCircle fontSize="large"/>
           </IconButton>
           <Menu
             id="menu-appbar"
@@ -112,7 +121,7 @@ export function Appbar (props){
           >
             <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
           </Menu>
-        </div>
+        </Grid>
       </Toolbar>
     </AppBar>
   );
