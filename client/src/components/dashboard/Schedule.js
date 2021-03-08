@@ -59,13 +59,8 @@ export function Schedule(props) {
         id: index,
       };
       const startEndDate = item["duration"].split('-');
-      console.log("currentDate: " + currentDate);
-      console.log("startDate b4 add = " + startEndDate[0]);
-      console.log("endDate b4 add = " + startEndDate[1]);
       schedulerData[index]["startDate"] = currentDate + startEndDate[0];
       schedulerData[index]["endDate"] = currentDate + startEndDate[1];
-      console.log("startDate after add: " + schedulerData[index]['startDate'])
-      console.log("endDate after add: " + schedulerData[index]['endDate']);
       schedulerData[index]["title"] = item["activity"];
     })
     setServerSchedule(props.schedule.schedule);
@@ -89,16 +84,12 @@ export function Schedule(props) {
           endDate = JSON.stringify(endDate);
           let startDate = changed[i]['startDate'];
           startDate = JSON.stringify(startDate);
-          console.log("onChange newStart: " +startDate);
-          console.log("onChange newEnd: "+endDate);
           changedActivity['activity'] = {
             'startDate': startDate,
             'endDate': endDate,
             'title': activityName
           }
-          console.log(changedActivity['activity']['startDate']);
           dataObj['changedActivity'] = changedActivity;
-          console.log(dataObj['changedActivity']['activity']['startDate']);
           break;
         }
       }

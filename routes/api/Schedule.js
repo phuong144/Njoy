@@ -96,15 +96,10 @@ function formatDate(date, duration) {
  * @return {string} String format to save
  */
 function convertToHHMM(date, date2) {
-  console.log(date);
-  console.log(date2);
   let startDate = new Date(JSON.parse(date));
   let endDate = new Date(JSON.parse(date2));
   startDate = subtractMinutes(startDate, 480);
   endDate = subtractMinutes(endDate, 480);
-  console.log("startDate in HHMM: "+startDate);
-  console.log("endDate in HHMM: "+ endDate);
-  
   const hour = formatTime(startDate.getHours());
   const minutes = formatTime(startDate.getMinutes());
   const hour2 = formatTime(endDate.getHours());
@@ -210,14 +205,12 @@ router.post("/setSchedule", (req, res) => {
   // req.body.changedActivity = {'activity' : {'startDate':'', 'endDate':'', 'title':''}}
   const uid = req.body.id;
   const activity = req.body.changedActivity;
-  console.log(activity);
   Schedule.findOne({ user: uid }).then(schedule => {
     if (schedule) {
       // Loop through schedule and find activity to update
       for (let i=0; i<schedule.schedule.length; i++) {
         // if activity name in db == activity name sent in req
         if (schedule.schedule[i]['activity'] == activity['activity']['title']) {
-          console.log(activity['activity']['startDate']);
           schedule.schedule[i]['duration'] = convertToHHMM(activity['activity']['startDate'], activity['activity']['endDate']);
           break;
         }

@@ -47,7 +47,6 @@ export const resetSchedule = dataObj => dispatch => {
 
 // Update schedule with changed activity time from DragNDrop
 export const setSchedule = dataObject => dispatch => {
-  console.log(dataObject);
   axios
     .post("/api/schedule/setSchedule", dataObject)
     .then(res => {
