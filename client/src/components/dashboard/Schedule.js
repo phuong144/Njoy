@@ -86,9 +86,9 @@ export function Schedule(props) {
         if (changed[i]) {
           const activityName = displaySchedule[i]['title'];
           let endDate = changed[i]['endDate'];
-          endDate = endDate.toString();
+          endDate = JSON.stringify(endDate);
           let startDate = changed[i]['startDate'];
-          startDate = startDate.toString();
+          startDate = JSON.stringify(startDate);
           console.log("onChange newStart: " +startDate);
           console.log("onChange newEnd: "+endDate);
           changedActivity['activity'] = {

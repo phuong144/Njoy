@@ -98,8 +98,8 @@ function formatDate(date, duration) {
 function convertToHHMM(date, date2) {
   console.log(date);
   console.log(date2);
-  let startDate = new Date(date);
-  let endDate = new Date(date2);
+  let startDate = new Date(JSON.parse(date));
+  let endDate = new Date(JSON.parse(date2));
   console.log("startDate in HHMM: "+startDate);
   console.log("endDate in HHMM: "+ endDate);
   const hour = formatTime(startDate.getHours());
