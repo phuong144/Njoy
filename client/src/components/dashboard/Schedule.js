@@ -85,8 +85,10 @@ export function Schedule(props) {
       for (let i=0; i<displaySchedule.length; i++) {
         if (changed[i]) {
           const activityName = displaySchedule[i]['title'];
-          const endDate = changed[i]['endDate'];
-          const startDate = changed[i]['startDate'];
+          let endDate = changed[i]['endDate'];
+          endDate = endDate.toISOString();
+          let startDate = changed[i]['startDate'];
+          startDate = startDate.toISOString();
           console.log("onChange newStart: " +startDate);
           console.log("onChange newEnd: "+endDate);
           changedActivity['activity'] = {
