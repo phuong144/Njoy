@@ -100,8 +100,11 @@ function convertToHHMM(date, date2) {
   console.log(date2);
   let startDate = new Date(JSON.parse(date));
   let endDate = new Date(JSON.parse(date2));
+  startDate = subtractMinutes(startDate, 480);
+  endDate = subtractMinutes(endDate, 480);
   console.log("startDate in HHMM: "+startDate);
   console.log("endDate in HHMM: "+ endDate);
+  
   const hour = formatTime(startDate.getHours());
   const minutes = formatTime(startDate.getMinutes());
   const hour2 = formatTime(endDate.getHours());
