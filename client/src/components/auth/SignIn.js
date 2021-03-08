@@ -97,6 +97,8 @@ export function SignIn(props) {
             label="Email Address"
             name="email"
             autoComplete="email"
+            error={errors.email != null}
+            helperText={errors.email}
             onChange={e => setEmail(e.target.value)}
             autoFocus
           />
@@ -110,6 +112,8 @@ export function SignIn(props) {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={errors.password != null}
+            helperText={errors.password}
             onChange={e => setPassword(e.target.value)}
           />
           <Button
