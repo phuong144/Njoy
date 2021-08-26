@@ -42,6 +42,8 @@ const useStyles = makeStyles({
   title: {
     justifyContent: 'center',
     alignItems: 'center',
+    width:"118.75px",
+    height:"62.5px"
   },
   link: {
     color: '#3bb446',
@@ -89,7 +91,7 @@ export function Appbar (props){
           <Link className={classes.link} to="/dashboard/activityform">{generate}</Link>
         </Grid>
         <Grid item xs = {6}>
-          <img src={logo} alt="Logo" className={classes.title} width="118.75px" height="62.5px"/>
+          <img src={logo} alt="Logo" className={classes.title} />
         </Grid>
         <Grid item xs = {5} className={classes.info}>
           <IconButton

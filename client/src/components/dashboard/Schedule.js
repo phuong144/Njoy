@@ -12,25 +12,11 @@ import {
   DragDropProvider,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-
-
-
-const useStyles = makeStyles({
-  button: {
-    color: '#ffa500',
-    fontSize: '15px',
-    fontFamily: 'Arial',
-    fontWeight: 'bold',
-    textDecoration: 'none !important',
-  },
-}, {index: 1});
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList
   const [schedule, setServerSchedule] = React.useState(null);
   const [displaySchedule, setDisplay] = React.useState([]);
-  const classes = useStyles();
 
   //get todays date
   const today = new Date();
@@ -125,11 +111,17 @@ export function Schedule(props) {
         }}> Add More </Link>
       </Button>
       <Button variant="contained"
-        style={{ background: '#c9f8f5',
-                 marginBottom: '10px',
-                 marginTop: '10px',
-                 marginLeft: '10px'}}
-        className={classes.button}
+        style={{
+          color: '#ffa500',
+          fontSize: '15px',
+          fontFamily: 'Arial',
+          fontWeight: 'bold',
+          textDecoration: 'none !important',
+          background: '#c9f8f5',
+          marginBottom: '10px',
+          marginTop: '10px',
+          marginLeft: '10px'
+        }}
         onClick={handleResetSchedule}>Reset Schedule</Button>
       <Paper>
         <Scheduler
