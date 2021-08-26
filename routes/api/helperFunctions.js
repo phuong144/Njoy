@@ -207,14 +207,16 @@ function calculateSchedule(schedule) {
 function convertToHHMM(date, date2, timeZoneDiff) {
   console.log(date + ", " + date2);
 
-  // these date will revert back to UTC and if heroku hosts, utc time will be saved instead of original local
+  // Apparently saves original timezone!
   let startDate = new Date(date);
   let endDate = new Date(date2);
   console.log(startDate + ", " + endDate);
+  /*
   if (process.env.NODE_ENV == 'production') {
     startDate = subtractMinutes(startDate, timeZoneDiff);
     endDate = subtractMinutes(endDate, timeZoneDiff);
   }
+  */
   console.log(startDate + ", " + endDate);
   const hour = formatTime(startDate.getHours());
   const minutes = formatTime(startDate.getMinutes());
