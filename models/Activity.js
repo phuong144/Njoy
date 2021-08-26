@@ -12,12 +12,6 @@ const ActivitySchema = new Schema({
 
 const ScheduleSchema = new Schema({
   activities: [ActivitySchema],
-  /*
-  schedule: [{
-    activity: String,
-    time: String,
-  }],
-  */
   schedule: [ActivitySchema],
   user: {
     type: mongoose.Schema.Types.ObjectId,

@@ -66,17 +66,6 @@ export function ActivityForm(props) {
   const [inputList, setInputList] = React.useState([{ activity: "", duration: "" }]);
   const [errors, setError] = React.useState([{ error: null }]);
   const [disabled, setDisable] = React.useState(false);
-
-  // useEffect(() => {
-  //   if (props.auth.isAuthenticated) {
-  //     props.history.push("/ActivityForm");
-  //   }
-  //   if (props.errors) {
-  //     setError(props.errors);
-  //     console.log(props.errors);
-  //   }
-  // }, [props]);
-
   const location = useLocation();
 
   useEffect(() => {
@@ -93,13 +82,6 @@ export function ActivityForm(props) {
       setError(initErrorList);
     }
   }, [location]);
-
-  /*
-  // Executes when props changes E.g. schedule is generated
-  useEffect(() => {
-    
-  }, [props])
-  */
 
   // Creates dataObject to send to action for generating a schedule
   function onSubmit(e) {
@@ -146,7 +128,6 @@ export function ActivityForm(props) {
     }
     if (!check) {
       setDisable(false);
-      console.log("no errors");
     } else {
       setDisable(true);
     }
