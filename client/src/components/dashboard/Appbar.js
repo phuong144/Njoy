@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/authActions";
@@ -6,18 +6,15 @@ import { Link, withRouter } from "react-router-dom";
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import logo from './njoylogo2.png';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   ml10: {
     marginLeft: '10px',
     width: '15ch',
@@ -59,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   leftToolbar: {
     textAlign: 'left',
   },
-}));
+}, {index: 1});
 
 export function Appbar (props){
   const [anchorEl, setAnchorEl] = React.useState(null);

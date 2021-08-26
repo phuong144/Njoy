@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     textDecoration: 'none !important',
   },
-});
+}, {index: 1});
 
 export function Schedule(props) {
   // schedule will be set to a list of objects like inputList

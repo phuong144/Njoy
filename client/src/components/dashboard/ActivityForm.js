@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link, withRouter, useLocation } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import BathtubIcon from '@material-ui/icons/Bathtub';
 import Paper from '@material-ui/core/Paper';
@@ -12,7 +12,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import { generateSchedule } from "../../redux/actions/scheduleActions";
 import { getSchedule } from "../../redux/actions/scheduleActions";
-import Container from '@material-ui/core/Container';
 
 
 const useStyles = makeStyles({
@@ -55,7 +54,7 @@ const useStyles = makeStyles({
     marginBottom: '10px',
     marginTop: '10px',
   }
-});
+}, {index: 1});
 
 /**
  * 
@@ -71,9 +70,7 @@ export function ActivityForm(props) {
   useEffect(() => {
     if (location.state != null && location.state.addMore) {
       const activities = props.schedule.activities;
-      activities.map((object, index) => {
-        delete object._id;
-      })
+      activities.forEach(object => delete object._id);
       let initErrorList = [];
       for (let i=0; i<activities.length; i++) {
         initErrorList.push({ 'error': null });
@@ -121,7 +118,7 @@ export function ActivityForm(props) {
   function checkErrors(errorlist) {
     let check = false;
     for(let i=0; i<errorlist.length; i++) {
-      if (errorlist[i]['error'] == true) {
+      if (errorlist[i]['error'] === true) {
         check = true;
         break;
       }
