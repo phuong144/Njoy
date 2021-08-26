@@ -83,17 +83,20 @@ export function Schedule(props) {
           let endDate = changed[i]['endDate'];
           console.log("New end date: " + endDate);
           
-          endDate = JSON.stringify(endDate);
+          //endDate = JSON.stringify(endDate);
+          endDate = endDate.toLocaleString();
           console.log("stringifyd endDate: " + endDate);
           let startDate = changed[i]['startDate'];
           console.log("New start date: " +startDate);
-
-          startDate = JSON.stringify(startDate);
+          let timeZoneDiff = today.getTimezoneOffset();
+          //startDate = JSON.stringify(startDate);
+          startDate = startDate.toLocaleString();
           console.log("Stringifyd startate: " + startDate);
           changedActivity['activity'] = {
             'startDate': startDate,
             'endDate': endDate,
-            'title': activityName
+            'title': activityName,
+            'timeZoneDiff': timeZoneDiff
           }
           dataObj['changedActivity'] = changedActivity;
           console.log("New start time: " + changedActivity['activity']['startDate'] + ", new end: " + changedActivity['activity']['endDate']);

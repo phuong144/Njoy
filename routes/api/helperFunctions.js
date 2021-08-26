@@ -201,22 +201,21 @@ function calculateSchedule(schedule) {
  * 
  * @param {string} date start date from drag and drop
  * @param {string} date2 end date from drag and drop
+ * @param {number} timeZoneDiff 
  * @returns {string} String format to save
  */
-function convertToHHMM(date, date2) {
+function convertToHHMM(date, date2, timeZoneDiff) {
   console.log(date + ", " + date2);
-  console.log(JSON.parse(date));
-  console.log(JSON.parse(date2));
-  let startDate = new Date(JSON.parse(date));
-  let endDate = new Date(JSON.parse(date2));
-  console.log(startDate);
-  console.log(endDate);
-  /*
+
+  // these date will revert back to UTC and if heroku hosts, utc time will be saved instead of original local
+  let startDate = new Date(date);
+  let endDate = new Date(date2);
+  
   if (process.env.NODE_ENV == 'production') {
-    startDate = subtractMinutes(startDate, 480);
-    endDate = subtractMinutes(endDate, 480);
+    startDate = subtractMinutes(startDate, timeZoneDiff);
+    endDate = subtractMinutes(endDate, timeZoneDiff);
   }
-  */
+  
   const hour = formatTime(startDate.getHours());
   const minutes = formatTime(startDate.getMinutes());
   const hour2 = formatTime(endDate.getHours());

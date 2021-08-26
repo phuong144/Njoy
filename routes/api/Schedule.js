@@ -18,7 +18,7 @@ router.post("/setSchedule", (req, res) => {
       for (let i=0; i<schedule.schedule.length; i++) {
         // if activity name in db == activity name sent in req
         if (schedule.schedule[i]['activity'] == activity['activity']['title']) {
-          schedule.schedule[i]['duration'] = helperFuncs.convertToHHMM(activity['activity']['startDate'], activity['activity']['endDate']);
+          schedule.schedule[i]['duration'] = helperFuncs.convertToHHMM(activity['activity']['startDate'], activity['activity']['endDate'], activity['activity']['timeZoneDiff']);
           break;
         }
       }
