@@ -11,14 +11,13 @@ router.post("/setSchedule", (req, res) => {
   // req.body.changedActivity = {'activity' : {'startDate':'', 'endDate':'', 'title':''}}
   const uid = req.body.id;
   const activity = req.body.changedActivity;
-  console.log(activity);
   Schedule.findOne({ user: uid }).then(schedule => {
     if (schedule) {
       // Loop through schedule and find activity to update
       for (let i=0; i<schedule.schedule.length; i++) {
         // if activity name in db == activity name sent in req
         if (schedule.schedule[i]['activity'] == activity['activity']['title']) {
-          schedule.schedule[i]['duration'] = helperFuncs.convertToHHMM(activity['activity']['startDate'], activity['activity']['endDate'], activity['activity']['timeZoneDiff']);
+          schedule.schedule[i]['duration'] = helperFuncs.convertToHHMM(activity['activity']['startDate'], activity['activity']['endDate']);
           break;
         }
       }

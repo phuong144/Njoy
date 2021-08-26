@@ -80,26 +80,19 @@ export function Schedule(props) {
       for (let i=0; i<displaySchedule.length; i++) {
         if (changed[i]) {
           const activityName = displaySchedule[i]['title'];
-          let endDate = changed[i]['endDate'];
-          console.log("New end date: " + endDate);
           
-          //endDate = JSON.stringify(endDate);
+          let endDate = changed[i]['endDate'];
           endDate = endDate.toLocaleString();
-          console.log("stringifyd endDate: " + endDate);
+
           let startDate = changed[i]['startDate'];
-          console.log("New start date: " +startDate);
-          let timeZoneDiff = today.getTimezoneOffset();
-          //startDate = JSON.stringify(startDate);
           startDate = startDate.toLocaleString();
-          console.log("Stringifyd startate: " + startDate);
+
           changedActivity['activity'] = {
             'startDate': startDate,
             'endDate': endDate,
-            'title': activityName,
-            'timeZoneDiff': timeZoneDiff
+            'title': activityName
           }
           dataObj['changedActivity'] = changedActivity;
-          console.log("New start time: " + changedActivity['activity']['startDate'] + ", new end: " + changedActivity['activity']['endDate']);
           break;
         }
       }
