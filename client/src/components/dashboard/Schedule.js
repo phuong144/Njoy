@@ -90,6 +90,7 @@ export function Schedule(props) {
             'title': activityName
           }
           dataObj['changedActivity'] = changedActivity;
+          console.log("Activity date to change: " + dataObj);
           break;
         }
       }

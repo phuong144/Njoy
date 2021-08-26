@@ -33,7 +33,6 @@ export const resetSchedule = dataObj => dispatch => {
     .then(res => {
       // schedule is a list of objects
       const schedule = res.data;
-      console.log(schedule);
      // dispatch to reducer
       dispatch(updateSchedule(schedule));
     })
@@ -52,7 +51,6 @@ export const setSchedule = dataObject => dispatch => {
     .then(res => {
       // schedule is a list of objects
       const schedule = res.data;
-      console.log(schedule);
      // dispatch to reducer
       dispatch(updateSchedule(schedule));
     })
@@ -74,12 +72,9 @@ export const getSchedule = uid => dispatch => {
     })
     .then(res => {
       if (res.status == '404') {
-        console.log("No schedule");
         dispatch(updateSchedule([]));
       } else {
         const data = res.data;
-        
-        console.log(data);
         dispatch(updateSchedule(data));
       }
      
